@@ -18,7 +18,7 @@ public class SecurityConfig {
                     try {
                         authz
                                 .antMatchers("/pub/**").permitAll()
-                                .anyRequest().authenticated()
+                                .anyRequest().hasAuthority("SCOPE_wilterson")
                             .and()
                                 .sessionManagement()
                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
