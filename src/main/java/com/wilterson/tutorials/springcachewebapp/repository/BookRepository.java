@@ -1,8 +1,9 @@
 package com.wilterson.tutorials.springcachewebapp.repository;
 
 import com.wilterson.tutorials.springcachewebapp.model.Book;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface BookRepository {
+public interface BookRepository extends JpaRepository<Book, String> {
 
-    Book getByIsbn(String isbn);
+    Book findByIsbn(String isbn);
 }
