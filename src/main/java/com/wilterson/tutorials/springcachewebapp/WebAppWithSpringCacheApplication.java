@@ -2,9 +2,7 @@ package com.wilterson.tutorials.springcachewebapp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cache.annotation.EnableCaching;
 
-@EnableCaching
 @SpringBootApplication
 public class WebAppWithSpringCacheApplication {
 
