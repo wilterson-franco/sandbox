@@ -1,5 +1,6 @@
-# Sandbox
-All the projects in this repository are in their respective git branches. Use the following git command to see all remote repositories:
-```
-git branch -r
-```
+# Java Lambdas Studies
+Following along the book:
+
+| Title                                                   | Author            | Publisher            |
+|---------------------------------------------------------|-------------------|----------------------|
+| Java 8 Lambdas</br>Functional Programing for the Masses | Richard Warburton | O'Reilly Media, Inc. |
