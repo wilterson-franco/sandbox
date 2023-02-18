@@ -1,0 +1,15 @@
+# This configuration could also be done through a configuration bean (refer to ClientConfiguration
+# class for a reference). If we have both configuration bean and configuration properties, configuration
+# properties will override configuration bean values.
+feign:
+  client:
+    config:
+      # optionally, if the configuration is common across all clients, it can be declared
+      # with the "default" client name which indicates that it will be used for all clients
+      #default:
+      jplaceholder:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: basic
+
+logging.level.com.wilterson.demo.service.PostClientHttpInterface: DEBUG
