@@ -1,5 +1,2 @@
-# Sandbox
-All the projects in this repository are in their respective git branches. Use the following git command to see all remote repositories:
-```
-git branch -r
-```
+# Spring Boot Slice Test
+In this project I want to show how to use Spring Boot's slice tests on an MVC application.
