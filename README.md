@@ -1,5 +1,2 @@
-# Sandbox
-All the projects in this repository are in their respective git branches. Use the following git command to see all remote repositories:
-```
-git branch -r
-```
+# Multi Data Souce Spring Boot Project
+This is a PoC to demostrate how to spin up a Spring Boot application with two data sources
