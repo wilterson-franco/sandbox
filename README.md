@@ -1,5 +1,5 @@
-# Sandbox
-All the projects in this repository are in their respective git branches. Use the following git command to see all remote repositories:
-```
-git branch -r
-```
+# Spring Batch
+This is my first Spring Batch project. It was built following along with Plural Sight's training course [Getting Started with Spring Batch 4](https://app.pluralsight.com/library/courses/getting-started-spring-batch/table-of-contents). The instructor GitHub repo is [HERE](https://github.com/michaelhoffmantech/patient-batch-loader).
+
+## Project Generation
+This project was generated through Spring Initializr. In order to load it up in Spring Initializr, just click [HERE](https://start.spring.io/#!type=maven-project&language=java&platformVersion=3.1.1&packaging=jar&jvmVersion=17&groupId=com.wilterson.springbatch&artifactId=getting-started&name=SpringBatchGettingStarted&description=Spring%20Batch%20Getting%20Started&packageName=com.wilterson.springbatch&dependencies=batch,lombok,devtools,actuator).
