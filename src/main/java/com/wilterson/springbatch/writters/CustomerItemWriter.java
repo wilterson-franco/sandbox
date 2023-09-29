@@ -5,6 +5,7 @@ import com.wilterson.springbatch.domains.Customer;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
+import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.file.FlatFileHeaderCallback;
 import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
@@ -66,8 +67,14 @@ public class CustomerItemWriter extends FlatFileItemWriter<Customer> {
         this.setLineAggregator(lineAggregator);
     }
 
+//    @Override
+//    public void write(Chunk<? extends Customer> items) throws Exception {
+//        super.write(items);
+//    }
+
     @Override
-    public String doWrite(final List<? extends Customer> items) {
+    public void write(Chunk<? extends Customer> items) {
+
         final StringBuilder linesToWrite = new StringBuilder();
 
         items.forEach(customer -> {
@@ -93,6 +100,6 @@ public class CustomerItemWriter extends FlatFileItemWriter<Customer> {
         });
 
         // return lines to write (limited to chunk size)
-        return linesToWrite.toString();
+//        return linesToWrite.toString();
     }
 }
