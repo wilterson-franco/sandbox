@@ -5,6 +5,6 @@ import java.util.Set;
 import lombok.Builder;
 
 @Builder
-public record CartDto(Set<ItemDto> items, BigDecimal total) {
+public record CartDto(Long id, Set<ItemDto> items, BigDecimal total) {
 
 }

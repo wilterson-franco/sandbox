@@ -19,7 +19,7 @@ public class SpringJpaTuningApplication {
         SpringApplication.run(SpringJpaTuningApplication.class, args);
     }
 
-    @Bean
+//    @Bean
     public CommandLineRunner commandLineRunner(CartRepository cartRepository) {
         return (args) -> {
 

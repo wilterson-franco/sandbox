@@ -1,7 +1,6 @@
 package com.wilterson.service;
 
-import com.wilterson.dto.CartDto;
-import com.wilterson.map.CartMapper;
+import com.wilterson.entity.Cart;
 import com.wilterson.repository.CartRepository;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -12,10 +11,13 @@ import org.springframework.stereotype.Service;
 public class CartService {
 
     private final CartRepository cartRepository;
-    private final CartMapper cartMapper;
 
-    public Optional<CartDto> getCart(Long cartId) {
-        return cartRepository.findById(cartId).map(cartMapper::toDto);
+    public Optional<Cart> getCart(Long cartId) {
+        return cartRepository.findById(cartId);
     }
 
+    public Cart createCart(Cart cart) {
+        cart.setTotal(ItemService.calculateTotal(cart.getItems()));
+        return cartRepository.save(cart);
+    }
 }

@@ -9,5 +9,6 @@ import org.mapstruct.Mapping;
 public interface ItemMapper {
 
     ItemDto toDto(Item item);
+    Item toEntity(ItemDto itemDto);
 
 }
