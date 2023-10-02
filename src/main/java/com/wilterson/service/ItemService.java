@@ -18,11 +18,6 @@ public class ItemService {
     public List<Item> addItem(Set<Item> items, Cart cart) {
 
         items.forEach(item -> item.setCart(cart));
-        cart.setTotal(calculateTotal(items));
         return itemRepository.saveAll(items);
-    }
-
-    public static BigDecimal calculateTotal(Set<Item> items) {
-        return items.stream().map(Item::getAmount).reduce(new BigDecimal("0"), BigDecimal::add);
     }
 }

@@ -8,7 +8,6 @@ import java.util.Set;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @EnableJpaAuditing
@@ -19,7 +18,7 @@ public class SpringJpaTuningApplication {
         SpringApplication.run(SpringJpaTuningApplication.class, args);
     }
 
-//    @Bean
+    //    @Bean
     public CommandLineRunner commandLineRunner(CartRepository cartRepository) {
         return (args) -> {
 
@@ -35,8 +34,8 @@ public class SpringJpaTuningApplication {
                     Item.builder().itemName("hat").amount(new BigDecimal("13.19")).build());
 
             Set<Cart> carts = Set.of(
-                    Cart.builder().items(itemList1).total(getItemsTotalAmount(itemList1)).build(),
-                    Cart.builder().items(itemList2).total(getItemsTotalAmount(itemList2)).build());
+                    Cart.builder().items(itemList1).build(),
+                    Cart.builder().items(itemList2).build());
 
             cartRepository.saveAll(carts);
         };

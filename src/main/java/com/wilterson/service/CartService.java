@@ -17,7 +17,6 @@ public class CartService {
     }
 
     public Cart createCart(Cart cart) {
-        cart.setTotal(ItemService.calculateTotal(cart.getItems()));
         return cartRepository.save(cart);
     }
 }

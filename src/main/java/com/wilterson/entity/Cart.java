@@ -1,10 +1,9 @@
 package com.wilterson.entity;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
-import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,8 +23,7 @@ public class Cart extends BaseEntity {
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
     private Set<Item> items;
 
-    @Column(nullable = false)
-    private BigDecimal total;
+    private LocalDateTime expirationDate;
 
     public void reparent() {
 
