@@ -1,4 +1,4 @@
 package com.wilterson;
 
-public record Person(String firstName, String lastName) {
+public record Person(Long id, String firstName, String lastName) {
 }
