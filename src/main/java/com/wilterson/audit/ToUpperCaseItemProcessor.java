@@ -4,14 +4,12 @@ import com.wilterson.entity.Customer;
 import com.wilterson.entity.Person;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 @Slf4j
 @RequiredArgsConstructor
-public class PersonItemProcessor implements ItemProcessor<Person, Customer> {
+public class ToUpperCaseItemProcessor implements ItemProcessor<Person, Customer> {
 
     private final JdbcTemplate jdbcTemplate;
 
