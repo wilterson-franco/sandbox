@@ -1,5 +1,6 @@
-package com.wilterson;
+package com.wilterson.shared;
 
+import com.wilterson.entity.Person;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;

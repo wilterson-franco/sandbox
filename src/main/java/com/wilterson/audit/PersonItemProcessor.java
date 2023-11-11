@@ -1,15 +1,17 @@
-package com.wilterson;
+package com.wilterson.audit;
 
+import com.wilterson.entity.Customer;
+import com.wilterson.entity.Person;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+@Slf4j
 @RequiredArgsConstructor
 public class PersonItemProcessor implements ItemProcessor<Person, Customer> {
-
-    private static final Logger log = LoggerFactory.getLogger(PersonItemProcessor.class);
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -25,7 +27,7 @@ public class PersonItemProcessor implements ItemProcessor<Person, Customer> {
 
         final Customer customer = new Customer(id, firstName, lastName);
 
-        log.info("Converting (" + person + ") into (" + customer + ")");
+        log.debug("Converting (" + person + ") into (" + customer + ")");
 
         return customer;
     }

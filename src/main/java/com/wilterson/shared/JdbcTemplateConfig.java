@@ -1,4 +1,4 @@
-package com.wilterson;
+package com.wilterson.shared;
 
 import javax.sql.DataSource;
 import org.springframework.context.annotation.Bean;

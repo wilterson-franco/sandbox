@@ -11,7 +11,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DataMigrationRunner implements ApplicationRunner {
+public class AuditRunner implements ApplicationRunner {
 
     private JobLauncher jobLauncher;
     private Job personToCustomerJob;

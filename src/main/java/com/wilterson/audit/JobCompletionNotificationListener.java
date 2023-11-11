@@ -1,5 +1,6 @@
-package com.wilterson;
+package com.wilterson.audit;
 
+import com.wilterson.entity.Customer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.BatchStatus;
@@ -26,8 +27,8 @@ public class JobCompletionNotificationListener implements JobExecutionListener {
             log.info("!!! JOB FINISHED! Time to verify the results");
 
             jdbcTemplate
-                    .query("SELECT id, first_name, last_name FROM person", new DataClassRowMapper<>(Person.class))
-                    .forEach(person -> log.info("Found <{{}}> in the database.", person));
+                    .query("SELECT id, first_name, last_name FROM customer", new DataClassRowMapper<>(Customer.class))
+                    .forEach(customer -> log.info("Found <{{}}> in the database.", customer));
         }
     }
 }
