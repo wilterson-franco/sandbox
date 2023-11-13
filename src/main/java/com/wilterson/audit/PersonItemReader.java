@@ -13,10 +13,11 @@ public class PersonItemReader extends JdbcCursorItemReader<Person> {
     private static final int MAX_ITEMS_PER_JOB_RUN = 10;
 
     public PersonItemReader(DataSource dataSource) {
+
         setName("PersonReader");
         setSql("select id, first_name, last_name, status from person where status = 'NEW'");
         setDataSource(dataSource);
-        setMaxRows(MAX_ITEMS_PER_JOB_RUN);
+        setMaxRows(0);
         setFetchSize(MAX_ITEMS_PER_JOB_RUN);
         setQueryTimeout(10000);
         setRowMapper(new PersonRowMapper());
