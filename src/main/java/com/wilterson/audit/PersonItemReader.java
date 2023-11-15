@@ -1,11 +1,11 @@
 package com.wilterson.audit;
 
 import com.wilterson.entity.Person;
-import com.wilterson.shared.PersonRowMapper;
 import javax.sql.DataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.database.JdbcCursorItemReader;
+import org.springframework.jdbc.core.DataClassRowMapper;
 
 @Slf4j
 public class PersonItemReader extends JdbcCursorItemReader<Person> {
@@ -20,7 +20,7 @@ public class PersonItemReader extends JdbcCursorItemReader<Person> {
         setMaxRows(0);
         setFetchSize(MAX_ITEMS_PER_JOB_RUN);
         setQueryTimeout(10000);
-        setRowMapper(new PersonRowMapper());
+        setRowMapper(new DataClassRowMapper<>(Person.class));
 
         logDataRead(this);
     }
