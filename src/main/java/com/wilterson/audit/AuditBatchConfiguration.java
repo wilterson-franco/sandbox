@@ -72,7 +72,7 @@ public class AuditBatchConfiguration {
     @Bean
     @Qualifier("copyDataStep")
     public Step copyDataStep(JobRepository jobRepository, PlatformTransactionManager transactionManager, JdbcCursorItemReader<Person> personItemReader,
-            ToUpperCaseItemProcessor toUpperCaseItemProcessor, JdbcBatchItemWriter<Customer> customerItemWriter) {
+            ToUpperCaseItemProcessor toUpperCaseItemProcessor, JdbcBatchItemWriter<Customer> customerItemWriter, JdbcTemplate jdbcTemplate) {
 
         return new StepBuilder("copyDataStep", jobRepository)
                 .<Person, Customer>chunk(STEP_CHUNK_SIZE, transactionManager)
@@ -83,6 +83,7 @@ public class AuditBatchConfiguration {
                 .listener(new LogStepExecutionListener())
                 .faultTolerant()
                 .skip(Exception.class)
+                .listener(new AuditSkipListener(jdbcTemplate))
                 .build();
     }
 

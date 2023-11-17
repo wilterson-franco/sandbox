@@ -13,8 +13,7 @@ CREATE TABLE person_skip  (
   id BIGINT NOT NULL PRIMARY KEY,
   created_datetime TIMESTAMP,
   first_name VARCHAR(20),
-  last_name VARCHAR(20),
-  status VARCHAR(10) DEFAULT 'NEW'
+  last_name VARCHAR(20)
 );
 
 CREATE TABLE customer (
