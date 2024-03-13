@@ -1,1 +1,1 @@
-A very nice way to implement DTO validations
+This project shows a conditional DTO validation implemented with Jakarta Bean Validation. The original article can be found [HERE](https://medium.com/@balag3/spring-boot-conditional-validation-example-2dd23af22539).
