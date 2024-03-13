@@ -2,11 +2,11 @@ package com.wilterson.validation.dto;
 
 import com.wilterson.validation.enums.ExportLocationOption;
 import com.wilterson.validation.validation.Conditional;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.NotEmpty;
 
 @Builder
 @Getter

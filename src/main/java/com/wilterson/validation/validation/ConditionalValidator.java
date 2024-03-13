@@ -4,8 +4,8 @@ import static org.springframework.util.ObjectUtils.isEmpty;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
 
