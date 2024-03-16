@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration degug="true">
+
+    <property name="LOG_DIR" value="logs"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                %d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n
+            </Pattern>
+        </layout>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>${LOG_DIR}/app.log</file>
+        <append>true</append>
+        <immediateFlush>true</immediateFlush>
+        <encoder>
+            <pattern>%d %p %c{1} [%t] %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE-ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/app-rolling.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>logs/archived/app.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!-- Each archived max file size (unit can be changed to MB) -->
+            <maxFileSize>1KB</maxFileSize>
+            <!-- Total size of all archive files. If total size > 512KB, it will delete old archived file -->
+            <totalSizeCap>10KB</totalSizeCap>
+            <!-- 3 days to keep -->
+            <maxHistory>2</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d %p %c{1} [%t] %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Not required to add an appender as CONSOLE is inherited additively from the root logger-->
+    <logger name="com.wilterson.beanaccess" level="trace" additivity="true"/>
+
+    <!-- Since the additivity attribute is false, this logger won't inherit the appenders from its
+    parent. This means that this logger will send messages only to the FILE appender-->
+    <logger name="FILE.com.wilterson.beanaccess" level="debug" additivity="false">
+        <appender-ref ref="FILE"/>
+    </logger>
+
+    <logger name="ROLLING.com.wilterson.beanaccess" level="debug" additivity="false">
+        <appender-ref ref="FILE-ROLLING"/>
+    </logger>
+
+    <root level="trace">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+</configuration>
