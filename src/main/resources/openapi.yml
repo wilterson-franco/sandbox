@@ -1,0 +1,142 @@
+openapi: 3.0.1
+info:
+  title: Clarity Merchant API
+  description: Contract between Merchant Self-Serve API and Clarity Merchant Service
+  contact:
+    name: API Support
+    email: apisupport@mastercard.com
+    url: https://developer.mastercard.com/support
+  license:
+    name: Copyright (c) 2021 Ethoca Limited. All Rights Reserved.
+    url: "https://www.ethoca.com/terms-of-use"
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Local server (development environment)
+tags:
+  - name: File Upload
+    description: File Upload
+paths:
+  /api/upload:
+    post:
+      summary: Uploads Files.
+      description: Uploads files.
+      operationId: handleFileUpload
+      tags:
+        - File Upload
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AridCaidFile'
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                type: string
+                description: Endpoint response
+                minLength: 1
+                maxLength: 50
+                example: "Files uploaded successfully"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        Source:
+          maxLength: 100
+          minLength: 0
+          type: string
+          description: Source of the error
+          example: Service
+        ReasonCode:
+          maxLength: 100
+          minLength: 0
+          type: string
+          description: 'Unique code identifying the error case. Examples -
+
+          + REQUIRED_FIELD
+
+          + INVALID_FIELD_VALUE'
+          example: REQUIRED_FIELD
+        Description:
+          maxLength: 1000
+          minLength: 0
+          type: string
+          description: Short description of the error
+          example: Short description of the error
+        Recoverable:
+          type: boolean
+          description: "Indicates whether this error will always be returned for this\
+            \ request, or retrying could change the outcome"
+          example: false
+          default: false
+        Details:
+          maxLength: 1000
+          minLength: 0
+          type: string
+          description: Optional detailed description of the issue
+          example: Detailed description of the error
+      description: Error object
+    ErrorResponse:
+      required:
+        - Errors
+      type: object
+      properties:
+        Errors:
+          $ref: '#/components/schemas/Errors'
+      description: Error Response object
+    Errors:
+      required:
+        - Error
+      type: object
+      properties:
+        Error:
+          type: array
+          description: List of error objects
+          items:
+            $ref: '#/components/schemas/Error'
+      description: Errors object
+    AridCaidFile:
+      type: object
+      properties:
+        file:
+          type: string
+          description: ARID/CAID pairs file
+          format: binary
+        jobParams:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobParam'
+    JobParam:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Job parameter name
+#          minLength: 1
+#          maxLength: 50
+          example: parentGuid
+        value:
+          type: string
+          description: Job parameter value
+#          minLength: 1
+#          maxLength: 200
+          example: ABCDEFGHIJ
+        type:
+          type: string
+          description: Job parameter type
+#          minLength: 6
+#          maxLength: 7
+          enum:
+            - STRING
+            - BOOLEAN
+          example: STRING
