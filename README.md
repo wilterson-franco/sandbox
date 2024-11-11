@@ -1,11 +1,11 @@
-# Book: GraphQL with Java and Spring
-Project to follow along with the book `GraphQL with Java and Spring`
+# GraphQL PoC
+Project to follow to PoC GraphQL with Spring and OpenAPI Spec. In this project, I also explore Jakarta validation and pagination with GraphQL
 
 ## Project Setup
-Spring Initializr [LINK](https://start.spring.io/#!type=maven-project&language=java&platformVersion=3.3.3&packaging=jar&jvmVersion=21&groupId=com.wilterson&artifactId=graphql-with-java-and-spring&name=GraphQL%20with%20Java%20and%20Spring&description=Project%20for%20following%20along%20with%20the%20book%20%22GraphQL%20with%20Java%20and%20Spring%22&packageName=com.wilterson&dependencies=graphql,webflux) to the project config.
+Spring Initializr [LINK](https://start.spring.io/#!type=maven-project&language=java&platformVersion=3.3.5&packaging=jar&jvmVersion=21&groupId=com.wilterson&artifactId=graphql-poc&name=GraphQL%20PoC&description=Project%20for%20exploring%20GraphQL%20with%20Spring%20and%20OpenAPI&packageName=com.wilterson.graphqlpoc&dependencies=graphql,web,actuator) to the project config.
 
 ## How to Launch
-Run the project and open the [GraphiQL web interface](http://localhost:8080/graphiql) in the browser. Enter the following query on the left-nand side of the GraphiQL palyground and click the Play button:
+Run the project and open the [GraphiQL web interface](http://localhost:8080/graphiql) in the browser. Enter the following query on the left-hand side of the GraphiQL palyground and click the Play button:
 
 ```dtd
 query myPets {
