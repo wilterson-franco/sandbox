@@ -1,5 +1,7 @@
 package com.wilterson;
 
-public record Pet(String name, String color) {
+import java.util.List;
+
+public record Pet(String name, String color, PetKind petKind, Pet friend, List<Person> owners) {
 
 }
