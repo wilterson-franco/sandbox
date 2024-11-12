@@ -1,0 +1,68 @@
+openapi: 3.0.0
+info:
+  description: |
+    This is a sample Petstore server.  You can find out more about Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).
+  version: "1.0.0"
+  title: Swagger Petstore
+  termsOfService: 'http://swagger.io/terms/'
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+servers:
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/wilterson.franco/graphql/1.0.0
+  - url: 'https://petstore.swagger.io/v2'
+tags:
+  - name: user
+    description: Operations about user
+    externalDocs:
+      description: Find out more about our store
+      url: 'http://swagger.io'
+paths:
+  /graphql:
+    get:
+      tags:
+        - user
+      summary: Get user by user name
+      operationId: getUserByName
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Person'
+        '400':
+          description: Invalid username supplied
+        '404':
+          description: User not found
+components:
+  schemas:
+    Person:
+      type: object
+      properties:
+        name:
+          type: string
+        phone:
+          type: string
+    Pet:
+      type: object
+      properties:
+        name:
+          type: string
+        colour:
+          type: string
+        petKind:
+          type: string
+          enum:
+            - CAT
+            - DOG
+            - BIRD
+        friend:
+          $ref: '#/components/schemas/Pet'
+        owners:
+          type: array
+          items:
+            $ref: '#/components/schemas/Person'

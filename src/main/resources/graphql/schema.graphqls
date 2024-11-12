@@ -4,7 +4,7 @@ type Query {
 
 type Pet {
     name: String
-    color: String
+    colour: String
     petKind: PetKind
     friend: Pet
     owners: [Person!]
