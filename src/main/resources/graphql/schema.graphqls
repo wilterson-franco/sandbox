@@ -1,9 +1,16 @@
+"""
+This is the main query
+"""
 type Query {
     pets: [Pet]
 }
 
+"""
+Declaration of a Pet object
+"""
 type Pet {
-    name: String
+    "all pets must have a name"
+    name: String!
     colour: String
     petKind: PetKind
     friend: Pet
