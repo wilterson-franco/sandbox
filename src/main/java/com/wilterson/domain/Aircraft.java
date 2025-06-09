@@ -4,14 +4,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document(collection = "AirCrafts")
-public class AirCraft {
+public class Aircraft {
 
     private String model;
     @Field(name = "capacity")
     private int seatCapacity;
     private WakeTurbulence wakeTurbulence;
 
-    public AirCraft(String model, int seatCapacity, WakeTurbulence wakeTurbulence) {
+    public Aircraft(String model, int seatCapacity, WakeTurbulence wakeTurbulence) {
         this.model = model;
         this.seatCapacity = seatCapacity;
         this.wakeTurbulence = wakeTurbulence;

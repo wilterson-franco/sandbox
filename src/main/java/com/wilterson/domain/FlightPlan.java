@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.IndexDirection;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.index.TextIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -13,21 +14,22 @@ public class FlightPlan {
 
     @Id
     private String id;
-    @Field(name="destination")
+    @TextIndexed(weight = 2)
+    @Field(name = "departure")
     private String departureCity;
-    @Field(name="departure")
+    @TextIndexed
+    @Field(name = "destination")
     private String destinationCity;
     @Indexed(direction = IndexDirection.ASCENDING)
     private LocalDateTime departureDateTime;
     private int flightDuration;
+    @TextIndexed
     private List<String> crossedCountries;
     private boolean isInternational;
-    private AirCraft airCraft;
+    private Aircraft airCraft;
 
-    public FlightPlan(String id, String departureCity, String destinationCity, LocalDateTime departureDateTime, int flightDuration,
-            List<String> crossedCountries,
-            boolean isInternational, AirCraft airCraft) {
-        this.id = id;
+    public FlightPlan(String departureCity, String destinationCity, LocalDateTime departureDateTime, int flightDuration, List<String> crossedCountries,
+            boolean isInternational, Aircraft airCraft) {
         this.departureCity = departureCity;
         this.destinationCity = destinationCity;
         this.departureDateTime = departureDateTime;
@@ -65,7 +67,7 @@ public class FlightPlan {
         return isInternational;
     }
 
-    public AirCraft getAirCraft() {
+    public Aircraft getAirCraft() {
         return airCraft;
     }
 
@@ -97,7 +99,7 @@ public class FlightPlan {
         isInternational = international;
     }
 
-    public void setAirCraft(AirCraft airCraft) {
+    public void setAirCraft(Aircraft airCraft) {
         this.airCraft = airCraft;
     }
 
