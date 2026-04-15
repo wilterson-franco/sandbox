@@ -1,0 +1,24 @@
+server:
+  port: 8080
+
+spring:
+  cache:
+    cache-names:
+      - issuerTokenCache
+
+issuer:
+  target-uri: "https://partner.example.com/launch"
+  token-wait-timeout: 750ms
+
+token-client:
+  base-url: "https://auth.example.com"
+  token-path: "/oauth/token"
+  connect-timeout: 500ms
+  response-timeout: 1500ms
+  cache-ttl: 13m
+  max-cache-size: 100000
+
+logging:
+  level:
+    root: INFO
+    com.example.demo: INFO
