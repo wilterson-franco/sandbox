@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.api.dto.IssuerInboundRequest;
 import com.example.demo.config.IssuerProperties;
 import com.example.demo.token.TokenAcquisitionException;
+import com.example.demo.token.TokenCacheKey;
 import com.example.demo.token.TokenCoordinator;
 import com.example.demo.token.TokenTimeoutException;
 import com.example.demo.token.TokenValue;
@@ -26,7 +27,9 @@ public class IssuerFlowService {
 
     public String process(IssuerInboundRequest request) {
 
-        CompletableFuture<TokenValue> tokenFuture = tokenCoordinator.prefetch(request.clientId(), request.clientSecret());
+        TokenCacheKey tokenCacheKey = new TokenCacheKey(request.clientId(), request.clientSecret());
+
+        CompletableFuture<TokenValue> tokenFuture = tokenCoordinator.prefetch(tokenCacheKey, request.clientSecret());
 
         doOtherTasks(request);
 

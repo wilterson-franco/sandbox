@@ -15,7 +15,7 @@ token-client:
   token-path: "/oauth/token"
   connect-timeout: 500ms
   response-timeout: 1500ms
-  cache-ttl: 13m
+  cache-ttl: 13s
   max-cache-size: 100000
 
 logging:

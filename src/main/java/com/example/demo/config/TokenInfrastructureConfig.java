@@ -1,5 +1,6 @@
 package com.example.demo.config;
 
+import com.example.demo.token.TokenCacheKey;
 import com.example.demo.token.TokenValue;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
@@ -13,7 +14,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 public class TokenInfrastructureConfig {
 
     @Bean
-    public Cache<String, TokenValue> issuerTokenCache(TokenClientProperties properties) {
+    public Cache<TokenCacheKey, TokenValue> issuerTokenCache(TokenClientProperties properties) {
         return Caffeine.newBuilder()
                 .expireAfterWrite(properties.cacheTtl())
                 .maximumSize(properties.maxCacheSize())

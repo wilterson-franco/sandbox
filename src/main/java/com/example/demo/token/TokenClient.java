@@ -20,9 +20,9 @@ public class TokenClient {
         this.properties = properties;
     }
 
-    public Mono<TokenValue> requestToken(String clientId, String clientSecret) {
+    public Mono<TokenValue> requestToken(TokenCacheKey tokenCacheKey, String clientSecret) {
 
-        AccessTokenRequest request = new AccessTokenRequest(clientId, clientSecret);
+        AccessTokenRequest request = new AccessTokenRequest(tokenCacheKey.clientId(), clientSecret);
 
         return tokenWebClient.post()
                 .uri(properties.tokenPath())
