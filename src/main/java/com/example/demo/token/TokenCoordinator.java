@@ -1,6 +1,9 @@
 package com.example.demo.token;
 
 import com.github.benmanes.caffeine.cache.Cache;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.ConcurrentHashMap;
@@ -31,31 +34,36 @@ public class TokenCoordinator {
         this.tokenFetchExecutor = tokenFetchExecutor;
     }
 
-    public CompletableFuture<TokenValue> prefetch(TokenCacheKey tokenCacheKey, String clientSecret) {
+    public TokenPrefetch prefetch(TokenCacheKey tokenCacheKey, String clientSecret) {
 
         TokenValue cached = tokenCache.getIfPresent(tokenCacheKey);
 
         if (cached != null) {
-            return CompletableFuture.completedFuture(cached);
+            return new TokenPrefetch(CompletableFuture.completedFuture(cached), Instant.now());
         }
 
-        return inFlight.computeIfAbsent(tokenCacheKey, key ->
-                CompletableFuture.supplyAsync(() -> fetchAndCache(key, clientSecret), tokenFetchExecutor)
-                        .whenComplete((result, throwable) -> inFlight.remove(key))
-        );
+        Instant startedAt = Instant.now();
+
+        log.info("Cache miss. Request token for clientId {} at {}", tokenCacheKey.clientId(), LocalDateTime.ofInstant(startedAt, ZoneId.systemDefault()));
+
+        CompletableFuture<TokenValue> future = inFlight.computeIfAbsent(tokenCacheKey,
+                key -> CompletableFuture.supplyAsync(() -> fetchAndCache(key, clientSecret), tokenFetchExecutor)
+                        .whenComplete((result, throwable) -> inFlight.remove(key)));
+
+        return new TokenPrefetch(future, startedAt);
     }
 
     private TokenValue fetchAndCache(TokenCacheKey tokenCacheKey, String clientSecret) {
 
-        log.info("Requesting token for {}.", tokenCacheKey.clientId());
-
         try {
             TokenValue tokenValue = tokenClient.requestToken(tokenCacheKey, clientSecret).toFuture().join();
+
             tokenCache.put(tokenCacheKey, tokenValue);
+
             return tokenValue;
 
         } catch (Exception ex) {
-            throw new CompletionException(new TokenAcquisitionException("Failed to obtain token for clientId=" + tokenCacheKey.clientId(), ex));
+            throw new CompletionException(new TokenAcquisitionException("Failed to obtain token for clientId=" + tokenCacheKey, ex));
         }
     }
 }

@@ -5,9 +5,11 @@ import com.example.demo.config.IssuerProperties;
 import com.example.demo.token.TokenAcquisitionException;
 import com.example.demo.token.TokenCacheKey;
 import com.example.demo.token.TokenCoordinator;
+import com.example.demo.token.TokenPrefetch;
 import com.example.demo.token.TokenTimeoutException;
 import com.example.demo.token.TokenValue;
-import java.util.concurrent.CompletableFuture;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -29,12 +31,12 @@ public class IssuerFlowService {
 
         TokenCacheKey tokenCacheKey = new TokenCacheKey(request.clientId(), request.clientSecret());
 
-        CompletableFuture<TokenValue> tokenFuture = tokenCoordinator.prefetch(tokenCacheKey, request.clientSecret());
+        TokenPrefetch tokenPrefetch = tokenCoordinator.prefetch(tokenCacheKey, request.clientSecret());
 
         doOtherTasks(request);
 
         try {
-            TokenValue tokenValue = tokenFuture.get(issuerProperties.tokenWaitTimeout().toMillis(), TimeUnit.MILLISECONDS);
+            TokenValue tokenValue = waitWithinRemainingBudget(tokenPrefetch);
 
             return UriComponentsBuilder
                     .fromUriString(issuerProperties.targetUri())
@@ -42,8 +44,6 @@ public class IssuerFlowService {
                     .build(true)
                     .toUriString();
 
-        } catch (TimeoutException ex) {
-            throw new TokenTimeoutException("Timed out waiting for token");
         } catch (InterruptedException ex) {
             Thread.currentThread().interrupt();
             throw new TokenAcquisitionException("Interrupted while waiting for token", ex);
@@ -53,6 +53,23 @@ public class IssuerFlowService {
                 throw runtimeException;
             }
             throw new TokenAcquisitionException("Failed while waiting for token", cause);
+        }
+    }
+
+    private TokenValue waitWithinRemainingBudget(TokenPrefetch tokenPrefetch) throws InterruptedException, ExecutionException {
+
+        Duration totalBudget = issuerProperties.tokenWaitTimeout();
+        Instant deadline = tokenPrefetch.startedAt().plus(totalBudget);
+        Duration remaining = Duration.between(Instant.now(), deadline);
+
+        if (remaining.isZero() || remaining.isNegative()) {
+            throw new TokenTimeoutException("Timed out waiting for token after %d ms total elapsed time".formatted(totalBudget.toMillis()));
+        }
+
+        try {
+            return tokenPrefetch.future().get(remaining.toMillis(), TimeUnit.MILLISECONDS);
+        } catch (TimeoutException ex) {
+            throw new TokenTimeoutException("Timed out waiting for token after %d ms total elapsed time".formatted(totalBudget.toMillis()), ex);
         }
     }
 

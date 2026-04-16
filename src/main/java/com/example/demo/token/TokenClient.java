@@ -31,10 +31,13 @@ public class TokenClient {
                 .retrieve()
                 .bodyToMono(AccessTokenResponse.class)
                 .map(response -> {
+
                     if (response.accessToken() == null || response.accessToken().isBlank()) {
                         throw new TokenAcquisitionException("Token endpoint returned an empty access token");
                     }
+
                     return new TokenValue(response.accessToken());
+
                 });
     }
 }
