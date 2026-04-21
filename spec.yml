@@ -1,0 +1,161 @@
+openapi: 3.0.3
+info:
+  title: Consumer Clarity API
+  version: 1.5.9
+servers:
+  - url: http://localhost:8080
+tags:
+  - name: Consumer Clarity API
+    description: Consumer Clarity API
+
+paths:
+  /searches:
+    post:
+      tags:
+        - Consumer Clarity API
+      summary: Searches for the enriched merchant and transaction information according to the given criteria.
+      operationId: search
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestPayload'
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponsePayload'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    Error:
+      type: object
+      description: Error object
+      properties:
+        Source:
+          type: string
+          minLength: 0
+          maxLength: 100
+          description: Source of the error
+          example: Service
+        ReasonCode:
+          type: string
+          minLength: 0
+          maxLength: 100
+          description: Unique code identifying the error case
+          example: RESULT_CODE
+        Description:
+          type: string
+          minLength: 0
+          maxLength: 1000
+          description: Short description of the error
+          example: Short description of the error
+        Recoverable:
+          type: boolean
+          description: Indicates whether this error will always be returned for this request, or retrying could change the outcome
+          example: false
+          default: false
+        Details:
+          type: string
+          minLength: 0
+          maxLength: 1000
+          description: Optional detailed description of the issue
+          example: Detailed description of the error
+
+    ErrorResponse:
+      type: object
+      description: Error Response object
+      required:
+        - Errors
+      properties:
+        Errors:
+          $ref: '#/components/schemas/Errors'
+
+    Errors:
+      type: object
+      description: Errors object
+      required:
+        - Error
+      properties:
+        Error:
+          type: array
+          description: List of error objects
+          items:
+            $ref: '#/components/schemas/Error'
+
+    RequestPayload:
+      type: object
+      required:
+        - locale
+        - a2aCriteria
+      properties:
+        locale:
+          type: string
+          enum:
+            - en-CA
+            - en-US
+        a2aCriteria:
+          type: array
+          minItems: 1
+          maxItems: 50
+          items:
+            $ref: '#/components/schemas/A2aCriteria'
+
+    A2aCriteria:
+      type: object
+      properties:
+        transactionType:
+          type: string
+        transactionValue:
+          type: string
+        a2aRail:
+          $ref: '#/components/schemas/A2aRail'
+
+    A2aRail:
+      oneOf:
+        - $ref: '#/components/schemas/Pix'
+        - $ref: '#/components/schemas/Sepa'
+      discriminator:
+        propertyName: railType
+        mapping:
+          pix: '#/components/schemas/Pix'
+          sepa: '#/components/schemas/Sepa'
+
+    Pix:
+      type: object
+      required:
+        - railType
+      properties:
+        railType:
+          type: string
+        cnpj:
+          type: string
+        e2eTrx:
+          type: string
+
+    Sepa:
+      type: object
+      required:
+        - railType
+      properties:
+        railType:
+          type: string
+        atr1:
+          type: string
+        atr2:
+          type: string
+
+    ResponsePayload:
+      type: object
+      properties:
+        searchResults:
+          type: string

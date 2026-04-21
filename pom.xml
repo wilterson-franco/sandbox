@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>4.0.5</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>com.example</groupId>
+    <artifactId>demo</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+
+    <properties>
+        <java.version>17</java.version>
+	    <openapi-generator.version>7.18.0</openapi-generator.version>
+	    <spec.location>${project.basedir}/spec.yml</spec.location>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webmvc</artifactId>
+        </dependency>
+	    <dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-validation</artifactId>
+	    </dependency>
+	    <dependency>
+		    <groupId>io.swagger.core.v3</groupId>
+		    <artifactId>swagger-core-jakarta</artifactId>
+		    <version>2.2.41</version>
+	    </dependency>
+	    <dependency>
+		    <groupId>org.openapitools</groupId>
+		    <artifactId>jackson-databind-nullable</artifactId>
+		    <version>0.2.3</version>
+	    </dependency>
+	    <dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-validation-test</artifactId>
+		    <scope>test</scope>
+	    </dependency>
+	    <dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-webmvc-test</artifactId>
+		    <scope>test</scope>
+	    </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+	        <plugin>
+		        <groupId>org.openapitools</groupId>
+		        <artifactId>openapi-generator-maven-plugin</artifactId>
+		        <version>${openapi-generator.version}</version>
+		        <executions>
+			        <execution>
+				        <id>execution-spec</id>
+				        <goals>
+					        <goal>generate</goal>
+				        </goals>
+				        <configuration>
+					        <inputSpec>${spec.location}</inputSpec>
+					        <generatorName>spring</generatorName>
+					        <apiPackage>com.demo</apiPackage>
+					        <modelPackage>com.demo</modelPackage>
+					        <supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
+					        <generateModelDocumentation>false</generateModelDocumentation>
+					        <generateApiDocumentation>false</generateApiDocumentation>
+					        <configOptions>
+						        <sourceFolder>src/gen/main/java</sourceFolder>
+						        <dateLibrary>java8</dateLibrary>
+						        <serializableModel>true</serializableModel>
+						        <useTags>true</useTags>
+						        <containerDefaultToNull>true</containerDefaultToNull>
+						        <generateBuilders>true</generateBuilders>
+						        <useJakartaEe>true</useJakartaEe>
+					        </configOptions>
+				        </configuration>
+			        </execution>
+		        </executions>
+	        </plugin>
+        </plugins>
+    </build>
+
+</project>
