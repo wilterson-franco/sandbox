@@ -1,13 +1,11 @@
 package com.example.demo.token;
 
 import com.github.benmanes.caffeine.cache.Cache;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
+import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -34,29 +32,30 @@ public class TokenCoordinator {
         this.tokenFetchExecutor = tokenFetchExecutor;
     }
 
-    public TokenPrefetch prefetch(TokenCacheKey tokenCacheKey, String clientSecret) {
+    public CompletableFuture<TokenValue> prefetch(TokenCacheKey tokenCacheKey, String clientSecret, long timeoutMillis) {
 
         TokenValue cached = tokenCache.getIfPresent(tokenCacheKey);
 
         if (cached != null) {
-            return new TokenPrefetch(CompletableFuture.completedFuture(cached), Instant.now());
+            return CompletableFuture.completedFuture(cached);
         }
 
-        Instant startedAt = Instant.now();
+        log.info("Cache miss. Request token for clientId {}", tokenCacheKey.clientId());
 
-        log.info("Cache miss. Request token for clientId {} at {}", tokenCacheKey.clientId(), LocalDateTime.ofInstant(startedAt, ZoneId.systemDefault()));
-
-        CompletableFuture<TokenValue> future = inFlight.computeIfAbsent(tokenCacheKey,
+        return inFlight.computeIfAbsent(tokenCacheKey,
                 key -> CompletableFuture.supplyAsync(() -> fetchAndCache(key, clientSecret), tokenFetchExecutor)
+                        .orTimeout(timeoutMillis, TimeUnit.MILLISECONDS)
                         .whenComplete((result, throwable) -> inFlight.remove(key)));
-
-        return new TokenPrefetch(future, startedAt);
     }
 
     private TokenValue fetchAndCache(TokenCacheKey tokenCacheKey, String clientSecret) {
 
         try {
             TokenValue tokenValue = tokenClient.requestToken(tokenCacheKey, clientSecret).toFuture().join();
+
+            if (tokenValue == null) {
+                throw new CompletionException(new TokenAcquisitionException("TokenValue is null for clientId=" + tokenCacheKey));
+            }
 
             tokenCache.put(tokenCacheKey, tokenValue);
 
