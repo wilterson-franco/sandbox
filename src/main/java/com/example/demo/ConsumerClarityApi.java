@@ -1,15 +1,14 @@
 package com.example.demo;
 
-import com.demo.A2aCriteria;
-import com.demo.ConsumerClarityApiApi;
-import com.demo.RequestPayload;
-import com.demo.ResponsePayload;
+import jakarta.annotation.PostConstruct;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
-public class ConsumerClarityApi implements ConsumerClarityApiApi {
+@Service
+public class ConsumerClarityApi implements ConsumerClarityApiApiDelegate {
 
     private static final Logger log = LoggerFactory.getLogger(ConsumerClarityApi.class);
 
@@ -18,14 +17,13 @@ public class ConsumerClarityApi implements ConsumerClarityApiApi {
 
         List<A2aCriteria> a2aCriteria = requestPayload.getA2aCriteria();
 
-        for (var criteria : a2aCriteria) {
+        ResponsePayload responsePayload = new ResponsePayload();
+        responsePayload.setSearchResults("Sample search results");
+        return ResponseEntity.ok(responsePayload);
+    }
 
-            log.info("transactionType: {}", criteria.getTransactionType());
-            log.info("transactionValue: {}", criteria.getTransactionValue());
-
-//            criteria.getA2aRail()
-        }
-
-        return ConsumerClarityApiApi.super.search(requestPayload);
+    @PostConstruct
+    public void init() {
+        System.out.println("ConsumerClarityApi initialized");
     }
 }

@@ -47,6 +47,22 @@
 		    <artifactId>spring-boot-starter-webmvc-test</artifactId>
 		    <scope>test</scope>
 	    </dependency>
+
+	    <dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-test</artifactId>
+		    <scope>test</scope>
+	    </dependency>
+	    <dependency>
+		    <groupId>org.projectlombok</groupId>
+		    <artifactId>lombok</artifactId>
+		    <optional>true</optional>
+	    </dependency>
+	    <dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-devtools</artifactId>
+		    <optional>true</optional>
+	    </dependency>
     </dependencies>
 
     <build>
@@ -68,13 +84,14 @@
 				        <configuration>
 					        <inputSpec>${spec.location}</inputSpec>
 					        <generatorName>spring</generatorName>
-					        <apiPackage>com.demo</apiPackage>
-					        <modelPackage>com.demo</modelPackage>
+					        <apiPackage>com.example.demo</apiPackage>
+					        <modelPackage>com.example.demo</modelPackage>
 					        <supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
 					        <generateModelDocumentation>false</generateModelDocumentation>
 					        <generateApiDocumentation>false</generateApiDocumentation>
 					        <configOptions>
 						        <sourceFolder>src/gen/main/java</sourceFolder>
+						        <delegatePattern>true</delegatePattern>
 						        <dateLibrary>java8</dateLibrary>
 						        <serializableModel>true</serializableModel>
 						        <useTags>true</useTags>
